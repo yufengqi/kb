@@ -1,0 +1,127 @@
+${include("../common/top.html")}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<!-- #set(List<Problem> problemlist) -->
+  <!-- Begin Wrapper -->
+  <div id="wrapper">
+  
+   <div class="intro">The Newest!</div>
+   
+  	<!-- Begin Container -->
+  	<div class="container">
+  <!-- #foreach(Problem problem : problemlist) -->
+    <div class="post text">
+    <div class="icon-text"></div>
+    <div class="content">
+    	<div class="top"></div>
+    	<div class="middle">
+    		<div class="post-text">
+    			<h2 class="title"><a href="problemdetatils.do?id=${problem.id}">${problem.title}</a></h2>
+    			<p>	
+                    ${problem.desciption}
+				</p>
+    		</div>
+    		<div class="meta-wrapper">
+			<div class="meta">
+    			<ul class="post-info">
+    				<li><span class="post-link"></span><a href="#">${problem.time}</a></li>
+    				<li><span class="post-comment"></span><a href="#">${problem.reply.size}</a></li>
+    				<li><span class="post-tag"></span>
+    				
+    				<!-- #foreach(TopicProblem tp : problem.topicpro) -->
+    				<a href="topiclist.do">${tp.topic.name}</a>&nbsp;
+    				<!-- #end -->
+ 
+    				</li>
+    			</ul>
+    			<div class="share"><span class="post-share"></span><a href="attention.do?proid=${problem.id}">关注 </a>${problem.userProblem.size}</div>
+    			<div class="clear"></div>
+    		</div>
+    		</div>
+    	</div>
+    	<div class="bottom"></div>
+    </div>
+    </div>
+     <!-- #end --> 
+
+    <!-- Begin Page Navi -->
+    <div class="page-navi">
+    		<ul>
+    			<li><a href="questionlist.do?pageIndex=${getPage().top()}" >top</a></li>
+    			<li><a href="questionlist.do?pageIndex=${getPage().prious()}">up</a></li>
+    			<li><a href="questionlist.do?pageIndex=${getPage().next()}">next</a></li>
+    			<li><a href="questionlist.do?pageIndex=${getPage().end()}">end</a></li>
+    		</ul>
+    </div>
+    <!-- End Page Navi -->
+    
+	</div> <!-- End Container -->
+	
+	<div class="sidebar">
+	
+		<div class="sidebox">
+			<h3 class="line">About</h3>
+			<p>Sed posuere consectetur est at lobortis. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit. Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+			<br />
+			<p>Amet risus nullam quis risus eget urna mollis ornare vel eu leo. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. </p>
+		</div>
+		
+		<div class="sidebox">
+			<h3 class="line">Popular Posts</h3>
+			<ul class="popular-posts">
+				<li>
+					<a href="#"><img src="style/images/art/ad1.jpg" alt="" /></a>
+					<h5><a href="#">Dolor Commodo Consectetur</a></h5>
+					<span>26 August 2011 | <a href="#">21 Comments</a></span>
+				</li>
+				
+				<li>
+					<a href="#"><img src="style/images/art/ad2.jpg" alt="" /></a>
+					<h5><a href="#">Dolor Commodo Consectetur</a></h5>
+					<span>26 August 2011 | <a href="#">21 Comments</a></span>
+				</li>
+				
+				<li>
+					<a href="#"><img src="style/images/art/ad3.jpg" alt="" /></a>
+					<h5><a href="#">Dolor Commodo Consectetur</a></h5>
+					<span>26 August 2011 | <a href="#">21 Comments</a></span>
+				</li>
+			</ul>
+		</div>
+		
+		
+		<div class="sidebox">
+			<h3 class="line">Categories</h3>
+			<ul class="cat-list">
+				<li><a href="#">Web Design (15)</a></li>
+				<li><a href="#">Photography (17)</a></li>
+				<li><a href="#">Grapic Design (34)</a></li>
+				<li><a href="#">Manipulation (24)</a></li>
+				<li><a href="#">Web Design (15)</a></li>
+				<li><a href="#">Photography (17)</a></li>
+				<li><a href="#">Grapic Design (34)</a></li>
+				<li><a href="#">Manipulation (24)</a></li>
+			</ul>
+		</div>
+		
+		<div class="sidebox">
+			<h3 class="line">Search</h3>
+			<form class="searchform" method="get">
+          		<input type="text" id="s" name="s" value="type and hit enter" onfocus="this.value=''" onblur="this.value='type and hit enter'"/>
+        	</form>
+		</div>
+		
+	</div>
+    <div class="clear"></div>
+    
+  </div>
+  <!-- End Wrapper -->
+
+</body>
+</html>
+${include("../common/foot.html")}

@@ -1,0 +1,84 @@
+${include("../common/top.html")}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<script type="text/javascript" src="style/js/mycheck.js"></script>
+<body>
+ <!-- Begin Wrapper -->
+  <div id="wrapper">
+  	<!-- Begin Blog -->
+  	<div class="container">
+  	<div class="content">
+  	<h2 class="line">注册&登录</h2>
+  	<p>请输入有效的邮箱.<a href = "index.do">没有账号，去注册</a></p>
+  	<br />
+  	<br />
+  	<br />
+  	<!-- Begin Form -->
+          <div class="form-container">
+            <form class="forms" action="user/userLogin.do" method="post" onsubmit ="return chack();" name = "form2" >
+              <fieldset>
+                <ol>
+                  <li class="form-row text-input-row">
+                    <label>邮箱：</label>
+                    <input type="text" name="email" value="" class="text-input required email" title="" /> 
+                  </li>
+                  <li class="form-row text-input-row">
+                    <label>密码：</label>
+                    <input type = "password" name = "password" value="" class="text-input required" title="" />
+                  </li>
+                  <li class="button-row">
+                    <input type="submit" value="登录" name="Submit" class="btn-submit" />
+                  </li>
+                </ol>
+                <input type="hidden" name="v_error" id="v-error" value="Required" />
+                <input type="hidden" name="v_email" id="v-email" value="Enter a valid email" />
+              </fieldset>
+            </form>
+            <div class="response"></div>
+          </div>
+        <!-- End Form -->
+    </div><!-- End Content -->
+	</div> <!-- End Container -->
+	
+	<div class="sidebar">
+	
+		<div class="sidebox">
+			<h3 class="line">Head Office</h3>
+        <p>Lorem Ipsum Dolor Sit
+          Moon Avenue No:11/21
+          Planet City, Earth<br>
+          <br>
+          <span class="lite1">Fax:</span> +555 797 534 01<br>
+          <span class="lite1">Tel:</span> +555 636 646 62<br>
+          <span class="lite1">E-mail:</span> name@domain.com</p>
+		</div>
+	
+		<div class="sidebox">
+			<h3 class="line">Branch Office</h3>
+        <p>Lorem Ipsum Dolor Sit
+          Moon Avenue No:11/21
+          Planet City, Earth<br>
+          <br>
+          <span class="lite1">Fax:</span> +555 797 534 01<br>
+          <span class="lite1">Tel:</span> +555 636 646 62<br>
+          <span class="lite1">E-mail:</span> name@domain.com</p>
+		</div>
+			
+	</div>
+    <div class="clear"></div>
+    
+  </div>
+  <!-- End Wrapper -->
+  
+  <div class="push"></div>
+</div>
+<!-- End Body Wrapper -->
+
+
+</body>
+</html>
+${include("../common/foot.html")}

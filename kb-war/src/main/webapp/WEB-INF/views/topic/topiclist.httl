@@ -1,0 +1,31 @@
+${include("../common/top.html")}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+    <div id="wrapper">
+  <!-- #set(List<Topic> topics) -->
+   <div class="intro"> show time！</div>
+   <h3 class="line">话题&问题</h3>
+
+	 <!-- #foreach(Topic t : topics) -->
+     <h1>${t.name}</h1> <a href="attentiontopic.do?topicid=${t.id}">关注 </a>${t.userTopic.size}
+<!-- #foreach(TopicProblem tp : t.topicpro) -->
+  <div class="one-half">
+      <p><a href="problemdetatils.do?id=${tp.problem.id}">${tp.problem.title}</a></p> <br/></div>
+       <!-- #end -->
+        <div class="clear"></div>
+        <br/><br/>
+ <!-- #end -->
+  <div class="clear"></div>
+    
+  </div>
+  <!-- End Wrapper -->
+  
+
+</body>
+</html>
+${include("../common/foot.html")}

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.damai.kb.core.daomapper.UsersMapper">
+     <!-- ResultMap映射 -->
+     <resultMap id="usersResultMap" type="Users">
+		<id property="id" column="user_id" />
+		<result property="email" column="user_email" />
+		<result property="password" column="user_password" />
+		<result property="headimage" column="user_image" />
+		
+		 <collection property="userProblem" column="user_id"
+			select="cn.damai.kb.core.daomapper.UserProblemMapper.getByUserId"></collection>
+	
+	     <collection property="problem" column="user_id"
+			select="cn.damai.kb.core.daomapper.ProblemMapper.getByUserId"></collection>
+	
+	      <collection property="userTopic" column="user_id"
+			select="cn.damai.kb.core.daomapper.UserTopicMapper.getByUserId"></collection>
+			
+			<collection property="userDzReply" column="user_id"
+			select="cn.damai.kb.core.daomapper.UserDzReplyMapper.getByUserId"></collection>
+	
+	</resultMap>
+	
+	<!-- 插入信息并返回主键id -->
+	<insert id="save" parameterType="Users" useGeneratedKeys="true"
+		keyProperty="user_id">
+		INSERT INTO kb_user
+		(user_email,user_password,user_image)
+		VALUES(#{email},#{password},#{headimage})
+	</insert>
+
+	<!-- 更新 -->
+	<update id="update" parameterType="Users">
+		UPDATE kb_user
+		<set>
+			<if test="email != null"> user_email=#{email},</if>
+			<if test="password != null"> user_password=#{password},</if>
+			<if test="headimage != null"> user_image=#{headimage},</if>
+		</set>
+		WHERE user_id=#{id}
+	</update>
+	
+	<!--根据id删除 -->
+	<delete id="deleteById">
+		DELETE FROM kb_user WHERE user_id=#{id}
+	</delete>
+
+	<!-- 根据id集合批量删除 
+	<delete id="deleteByIds" parameterType="list">
+		DELETE FROM org_employee WHERE pk_employee_id IN
+		<foreach item="item" index="index" collection="list"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>   先放一放-->
+	
+	
+	
+	<!-- 根据id查询 -->
+	<select id="getById" resultMap="usersResultMap">
+		SELECT * FROM kb_user WHERE
+		user_id =
+		#{id} LIMIT 0,1
+	</select>
+	
+	
+	<!-- 根据id集合查询 -->
+	<select id="getByIds" resultMap="usersResultMap">
+		SELECT * FROM kb_user WHERE user_id IN
+		<foreach item="item" index="index" collection="list"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<!-- 以下为自定义dao方法 -->
+	<!-- 根据Email和密码查询 -->
+	<select id="getByEmailPwd" resultMap="usersResultMap">
+		SELECT * FROM kb_user
+		<where>
+			<if test="email != null">
+				user_email = #{email}
+			</if>
+			<if test="password != null">
+				AND user_password = #{password}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getByEmail" resultMap="usersResultMap">
+		SELECT * FROM kb_user where 
+				user_email = #{email}
+	</select>
+	
+	
+</mapper>  

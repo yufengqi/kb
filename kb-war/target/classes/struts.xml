@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE struts PUBLIC  
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"  
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<constant name="struts.objectFactory" value="spring" />
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
+	<constant name="struts.action.extension" value="do, " />
+	<constant name="struts.devMode" value="false" />
+	<constant name="struts.class.reloading.reloadConfig" value="false" />
+	<constant name="struts.locale" value="zh_CN" />
+	<!-- 允许访问静态方法 -->
+	<constant name="struts.ognl.allowStaticMethodAccess" value="true" />
+	<!-- 允许使用/ -->
+	<constant name="struts.enable.SlashesInActionNames" value="true" />
+	
+	<constant name="struts.convention.result.path" value="/" />
+	
+	<constant name="struts.convention.package.locators" value="cn.damai.kb.action"></constant> 
+	
+   <!--   <package name="default" extends="httl-default">
+		<default-action-ref name="notFound" />
+		<action name="notFound">
+			<result type="redirect">/404</result>
+		</action>
+	</package>-->
+	
+	<!-- 页面配置，简化路径 -->
+	<package name="httlpage" extends = "httl-default" namespace = "/">
+	
+	    <action name="index">
+			 <result type = "httl">/index.httl</result>
+		</action>
+		
+		<action name="firstpage">
+			 <result  type = "httl">/firstpage.httl</result>
+		</action>
+		
+		 <action name="login">
+			 <result type = "httl">/login.httl</result>
+		</action>
+		
+		<action name="askquestion">
+			 <result type = "httl">problem/askquestion.httl</result>
+		</action>
+		
+		<action name="problem">
+			 <result type = "httl">problem/problem.httl</result>
+		</action>
+		
+		<action name="myself">
+		     <result type = "chain">userLogin</result>
+		</action>
+
+	</package>
+	
+	<!-- 用户注册和登录 -->
+	<package name="user" extends = "httl-default" namespace = "/">
+	    <action name="userRegister" class = "cn.damai.kb.action.UsersAction" method = "register">
+	       <result name = "success" type = "httl">/login.httl</result>
+	       <result name = "error" type = "chain">index</result>
+	   </action>
+	   
+	 <!--   <action name="userLogin" class = "cn.damai.kb.action.UsersAction" method = "login">
+	       <result name = "success" type = "httl">myself/myself.httl</result>
+	       <result name = "error" type = "chain">login</result>
+	   </action> -->
+	   
+	   <action name="problemdetatils" class = "cn.damai.kb.action.UsersAction" method = "getProblemDetatils">
+	       <result name = "success" type = "httl">problem/problemdetatils.httl</result>
+	       <result name = "error" type= "chain">index</result>
+	   </action>
+	   
+	    <action name="userLogout" class = "cn.damai.kb.action.UsersAction" method = "logout">
+	       <result name = "success" type = "httl">/login.httl</result>
+	       <result name = "error" type= "chain">index</result>
+	   </action>
+	   
+	    <action name="registerServlet" class = "cn.damai.kb.action.UsersAction" method = "isEmail">
+	   </action>
+	   
+	</package>
+	
+	<!-- 问题 -->
+	<package name="question" extends = "httl-default" namespace="/">
+	
+	   <action name="askQuestion" class = "cn.damai.kb.action.ProblemAction" method = "addProblem">
+	      <result name = "success" type = "chain">questionlist</result>
+	       <result name = "error" type= "chain">login</result>
+	   </action>
+	   
+	    <action name="questionlist" class = "cn.damai.kb.action.ProblemAction" method = "getProblems">
+	      <result name = "success" type = "httl">problem/problemlist.httl</result>
+	       <result name = "error" type= "chain">index</result>
+	   </action>
+	   
+	   <action name="problemdetatils" class = "cn.damai.kb.action.ProblemAction" method = "getProblemDetatils">
+	      <result name = "success" type = "httl">problem/problemdetatils.httl</result>
+	       <result name = "error" type= "chain">index</result>
+	   </action>
+	   
+	     <action name="find" class = "cn.damai.kb.action.ProblemAction" method = "getProblemPopular">
+	      <result name = "success" type = "httl">problem/find.httl</result>
+	      <result name = "error" type= "chain">index</result>
+	   </action>
+	   
+   </package>
+   
+   <!-- 话题 -->
+   <package name="topic" extends = "httl-default" namespace = "/">
+       <action name="topiclist" class = "cn.damai.kb.action.TopicAction" method = "getNewestTopic">
+           <result name = "success" type = "httl">topic/topiclist.httl</result>
+            <result name = "error" type= "chain">index</result>
+       </action>
+       
+       <action name="topicServlet" class = "cn.damai.kb.action.TopicAction" method = "chooseTopic">
+       </action>
+       
+       
+   </package>
+   
+   <!-- 回复 -->
+	<package name="reply" extends = "httl-default" namespace="/">
+	
+	   <action name="addReply" class = "cn.damai.kb.action.ReplyAction" method = "addReply">
+	      <result name = "success" type = "chain">problemdetatils</result>
+	       <result name = "error" type= "chain">login</result>
+	   </action>
+	  
+	  </package>
+	  
+	 
+	<!-- 点赞 -->
+    <package name="praise" extends = "httl-default" namespace="/">
+	   <action name="praise" class = "cn.damai.kb.action.PraiseAction" method = "addPraise">
+	      <result name = "success" type = "chain">problemdetatils</result>
+	     <result name = "error" type = "chain">login</result>
+	   </action>
+	   
+	    
+	</package>
+	
+	<!-- 关注 -->
+    <package name="attention" extends = "httl-default" namespace="/">
+	   <action name="attention" class = "cn.damai.kb.action.UserProblemAction" method = "addAttentions">
+	      <result name = "success" type = "chain">problemdetatils</result>
+	     <result name = "error" type = "chain">login</result>
+	   </action>
+	   
+	    <action name="attentiontopic" class = "cn.damai.kb.action.UserTopicAction" method = "addAttentiontopic">
+           <result name = "success" type = "chain">myself</result>
+           <result name = "error" type = "chain">login</result>
+       </action>
+
+        <action name="qxtopic" class = "cn.damai.kb.action.UserTopicAction" method = "qxAttentiontopic">
+           <result name = "success" type = "chain">myself</result>
+           <result name = "error" type = "chain">login</result>
+       </action>
+       
+         <action name="qxProblem" class = "cn.damai.kb.action.UserProblemAction" method = "qxProblem">
+	      <result name = "success" type = "chain">myself</result>
+	     <result name = "error" type = "chain">login</result>
+	   </action>
+	    
+	</package>
+
+</struts>
+
+
+
+

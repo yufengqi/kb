@@ -1,0 +1,118 @@
+${include("../common/top.html")}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+
+<style>
+   #show{
+     padding:0px 80px;
+     position:obslute;
+     text-align:left;
+     disply:none;
+  }
+</style>
+
+	<link rel="stylesheet" href="editor/themes/default/default.css" />
+	<link rel="stylesheet" href="editor/plugins/code/prettify.css" />
+	<script charset="utf-8" src="editor/kindeditor.js"></script>
+	<script charset="utf-8" src="editor/lang/zh_CN.js"></script>
+	<script charset="utf-8" src="editor/plugins/code/prettify.js"></script>
+	<script>
+		KindEditor.ready(function(K) {
+			var editor1 = K.create('textarea[name="desciption"]', {
+				cssPath : '../plugins/code/prettify.css',
+				uploadJson : '../jsp/upload_json.jsp',
+				fileManagerJson : '../jsp/file_manager_json.jsp',
+				allowFileManager : true,
+				afterCreate : function() {
+					var self = this;
+					K.ctrl(document, 13, function() {
+						self.sync();
+						document.forms['example'].submit();
+					});
+					K.ctrl(self.edit.doc, 13, function() {
+						self.sync();
+						document.forms['example'].submit();
+					});
+				}
+			});
+			prettyPrint();
+		});
+	</script>
+
+<script>
+  
+   $(document).ready(function(){
+	           $("#topic").keyup(function(){
+	               $("#show").load("topicServlet.do",{topic:$("#topic").val()},
+	               function(text){
+	                    $("#show").html(text);
+	               }); 
+	           });
+	     });
+
+</script>
+
+<body>
+
+ <!-- Begin Wrapper -->
+  <div id="wrapper">
+  	<!-- Begin Blog -->
+  	<div class="container">
+  	<div class="content">
+  	<h2 class="line">提问</h2>
+  	<p>亲，写下你的问题，会有很多大牛给你精彩回答哦~</a></p>
+  	<br />
+  	<br />
+  	<br />
+  	<!-- Begin Form -->
+          <div class="form-container">
+            <form class="forms" action="askQuestion.do" method="post" name = "example">
+              <fieldset>
+                <ol>
+                  <li class="form-row text-input-row">
+                    <label>问题：</label>
+                    <input type="text" name="title" value="" class="text-input required email" title="" /> 
+                  </li>
+                  <li class="form-row text-area-row">
+                    <label>问题描述：</label>
+                    <textarea name="desciption" cols="100" rows="8" style="width:700px;height:200px;visibility:hidden;" class="text-area required" ></textarea>
+                   
+                  </li>
+                 <!--  <li class="form-row text-input-row">
+                     <label class="control-label" for="fileInput">图片：</label>	
+							<input id="fileInput" type="file" />
+					</li>  -->
+                    <li class="form-row text-input-row">
+                    <label>选择话题</label>
+                    <input type="text" id = "topic" name="topic" value="" class="text-input required" title="" />
+                    <div id = "show"></div>
+                  </li>
+                  <li class="button-row">
+                    <input type="submit" value="提问" name="Submit" class="btn-submit" />
+                  </li>
+                </ol>
+              </fieldset>
+            </form>
+            <div class="response"></div>
+          </div>
+        <!-- End Form -->
+    </div><!-- End Content -->
+	</div> <!-- End Container -->
+
+    <div class="clear"></div>
+    
+  </div>
+  <!-- End Wrapper -->
+  
+  <div class="push"></div>
+</div>
+<!-- End Body Wrapper -->
+
+
+</body>
+</html>
+${include("../common/foot.html")}

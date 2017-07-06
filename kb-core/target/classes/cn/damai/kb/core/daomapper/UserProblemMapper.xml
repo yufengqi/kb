@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.damai.kb.core.daomapper.UserProblemMapper">
+     <!-- ResultMap映射 -->
+     <resultMap id="UserProblemResultMap" type="UserProblem">
+		<id property="id" column="up_id" />
+		<!-- 映射用户 -->
+		<association property="user" column="user_id"
+			select="cn.damai.kb.core.daomapper.UsersMapper.getById">
+		</association>
+		<!-- 映射问题 -->
+		<association property="problem" column="pro_id"
+			select="cn.damai.kb.core.daomapper.ProblemMapper.getById">
+		</association>	
+	</resultMap>
+
+	<!-- 插入信息并返回主键id -->
+	<insert id="save" parameterType="UserProblem" useGeneratedKeys="true"
+		keyProperty="up_id">
+		INSERT INTO kb_user_problem
+		(user_id,pro_id)
+		VALUES(#{user.id},#{problem.id})
+	</insert>
+
+	<!-- 更新 -->
+	<update id="update" parameterType="UserProblem">
+		UPDATE kb_user_problem
+		<set>
+		    <if test="user != null and user.id != null"> user_id=#{user.id},</if>
+		    <if test="problem != null and pro.id != null"> pro_id=#{problem.id},</if>
+		</set>
+		WHERE up_id=#{id}
+	</update>
+	
+	<!--根据id删除 -->
+	<delete id="deleteById">
+		DELETE FROM kb_user_problem WHERE up_id=#{id}
+	</delete>
+
+	<!-- 根据id集合批量删除 
+	<delete id="deleteByIds" parameterType="list">
+		DELETE FROM org_employee WHERE pk_employee_id IN
+		<foreach item="item" index="index" collection="list"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>   先放一放-->
+	
+	
+	
+	<!-- 根据id查询 -->
+	<select id="getById" resultMap="UserProblemResultMap">
+		SELECT * FROM kb_user_problem WHERE
+		up_id =
+		#{id} LIMIT 0,1
+	</select>
+	
+	
+	<!-- 根据id集合查询 -->
+	<select id="getByIds" resultMap="UserProblemResultMap">
+		SELECT * FROM kb_user_problem WHERE up_id IN
+		<foreach item="item" index="index" collection="list"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	
+	<!-- 自定义 -->
+	<!-- 根据用户id查询相关的问题 -->
+	<select id="getByUserId" resultType="Long" resultMap="UserProblemResultMap">
+		SELECT * FROM kb_user_problem WHERE
+		user_id =
+		#{userid}
+	</select>
+	
+	<!-- 根据问题id查询相关的问题 -->
+	<select id="getByProblemId" resultType="Long" resultMap="UserProblemResultMap">
+		SELECT * FROM kb_user_problem WHERE
+		pro_id =
+		#{problemid}
+	</select>
+	
+</mapper>  

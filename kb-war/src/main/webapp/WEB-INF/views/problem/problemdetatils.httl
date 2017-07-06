@@ -1,0 +1,159 @@
+${include("../common/top.html")}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+
+<link rel="stylesheet" href="editor/themes/default/default.css" />
+	<link rel="stylesheet" href="editor/plugins/code/prettify.css" />
+	<script charset="utf-8" src="editor/kindeditor.js"></script>
+	<script charset="utf-8" src="editor/lang/zh_CN.js"></script>
+	<script charset="utf-8" src="editor/plugins/code/prettify.js"></script>
+	<script>
+		KindEditor.ready(function(K) {
+			var editor1 = K.create('textarea[name="reply.content"]', {
+				cssPath : '../plugins/code/prettify.css',
+				uploadJson : '../jsp/upload_json.jsp',
+				fileManagerJson : '../jsp/file_manager_json.jsp',
+				allowFileManager : true,
+				afterCreate : function() {
+					var self = this;
+					K.ctrl(document, 13, function() {
+						self.sync();
+						document.forms['example'].submit();
+					});
+					K.ctrl(self.edit.doc, 13, function() {
+						self.sync();
+						document.forms['example'].submit();
+					});
+				}
+			});
+			prettyPrint();
+		});
+	</script>
+
+<body>
+
+ <!-- Begin Wrapper -->
+  <div id="wrapper">
+  
+   <div class="intro">Give you answers!</div>
+   <!-- #set(Problem problem) -->
+  	<!-- Begin Blog -->
+  	<div class="container">
+  	
+  	<div class="post photo">
+    <div class="icon-photo"></div>
+    <div class="content">
+    	<div class="top"></div>
+    	<div class="middle">
+    	<h3>${problem.title}</h3>
+    		<div class="post-text" id = "html" >
+    		${problem.desciption}
+    		</div>
+			<div class="meta-wrapper">
+			<div class="meta">
+    			<ul class="post-info">
+    				<li><span class="post-link"></span><a href="#">${problem.time}</a></li>
+    				<li><span class="post-comment"></span>
+    				
+    				<a href="#">${problem.reply.size}</a></li>  
+    				
+    				
+    				<li><span class="post-tag"></span>
+    				
+    				<!-- #foreach(TopicProblem tp : problem.topicpro) -->
+    				<a href="topiclist.do">${tp.topic.name}</a>&nbsp;
+    				<!-- #end -->
+    				
+    				</li>
+    			</ul>
+    			<div class="share"><span class="post-share"></span><a href="attention.do?proid=${problem.id}">关注</a>${problem.userProblem.size}</div>
+    			<div class="clear"></div>
+    		</div>
+    		</div>
+    	</div>
+    	<div class="bottom"></div>
+    	<br/>
+    	<br/><br/>
+    </div>
+    
+    
+    
+    
+    <!-- Begin Comments Section -->
+		<!-- Begin Comments -->
+        
+        <h3 class="line">相关回复</h3>
+        
+       
+        <!-- Begin Comments -->
+        <div id="comments">
+          <!-- #foreach(Reply r : problem.reply) -->
+          <ol id="singlecomments" class="commentlist">
+            <li class= "clearfix">
+              <div class="user"><img alt="" src="style/images/art/ad1.jpg" height="48" width="48" class="avatar" /><span class="post-comment"></span><a href="praise.do?replyid=${r.id}">赞&nbsp;${r.userDzReply.size}</a></div>
+              <div class="message">
+              <div class="top"></div>
+              <div class="middle">
+                <div class="info">
+                  <h4><a href="myself.do">${r.user.email}</a></h4>
+                  <span class="date">${r.time}</span>  </div>
+                <p>${r.content}</p>
+                </div>
+                <div class="bottom"></div>
+              </div>
+              <div class="clear"></div>
+              </br>
+              <!-- #end -->
+            
+        <!-- End Comments --> 
+        
+        
+        
+        <!-- Begin Form -->
+        <div class="comment-form">
+          <h3 class="line">回复</h3>
+          <div class="form-container">
+            <form class="forms" action="addReply.do" method="post">
+              <fieldset>
+                <ol>
+                  <li class="form-row text-area-row">
+                   <input type="hidden" name="proid" id="v-error" value="${problem.id}" />
+                    <label>回复内容：</label>
+                    <textarea name="reply.content" cols="100" rows="8" style="width:700px;height:200px;visibility:hidden;" class="text-area required" ></textarea>
+                  </li>
+                  <li class="form-row hidden-row">
+                    <input type="hidden" name="hidden" value="" />
+                  </li>
+                  <li class="button-row">
+                    <input type="submit" value="提交" name="submit" class="btn-submit" />
+                  </li>
+                </ol>
+                <input type="hidden" name="v_email" id="v-email" value="Enter a valid email" />
+              </fieldset>
+            </form>
+            <div class="response"></div>
+          </div>
+        </div>
+
+        <!-- End Form --> 
+        
+        <!-- End Comments -->
+    <!-- End Comments Section -->
+    
+	</div> <!-- End Container -->
+	
+	
+	
+
+    <div class="clear"></div>
+    
+  </div>
+  <!-- End Wrapper -->
+
+</body>
+</html>
+${include("../common/foot.html")}

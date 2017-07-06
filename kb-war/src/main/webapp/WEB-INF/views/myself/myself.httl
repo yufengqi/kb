@@ -1,0 +1,126 @@
+${include("../common/top.html")}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+ <!-- Begin Wrapper -->
+  <div id="wrapper">
+  
+   <div class="intro">About myself!</div>
+   
+  	<!-- Begin Container -->
+  	<div class="container">
+  	
+  	<h3 class="line">与我相关</h3>
+  	<!-- #set(Users user) -->
+    <div class="one-half">
+        <h3>我关注的话题</h3>
+        <ul>
+    <!-- #foreach(UserTopic ut : user.userTopic) -->
+            <li><a href = "topiclist.do">${ut.topic.name}</a>&nbsp;&nbsp;<a href = "qxtopic.do?utid=${ut.id}">取消关注</a></li>
+    <!-- #end -->
+         
+        </ul>
+      </div>
+      <div class="one-half last">
+        <h3>我关注的问题</h3>
+        <ol>
+          <!-- #foreach(UserProblem up : user.userProblem) -->
+            <li><a href = "problemdetatils.do?id=${up.problem.id}">${up.problem.title}</a>&nbsp;&nbsp;<a href = "qxProblem.do?upid=${up.id}">取消关注</a></li>
+          <!-- #end -->
+        </ol>
+      </div>
+      <div class="clear"></div>
+       <br/> <br/> <br/>
+
+
+       <div class="one-half">
+        <h3>我的问题</h3>
+        <ul>
+          <!-- #foreach(Problem p : user.problem) -->
+            <li><a href = "problemdetatils.do?id=${p.id}">${p.title}</a></li>
+          <!-- #end -->
+        </ul>
+      </div>
+      <div class="one-half last">
+        <h3>我赞过的评论</h3>
+        <ol>
+          <!-- #foreach(UserDzReply udr : user.userDzReply) -->
+            <li><a href = "problemdetatils.do?id=${udr.reply.problem.id}">${udr.reply.content}</a></li>
+          <!-- #end -->
+        </ol>
+      </div>
+      <div class="clear"></div>
+    
+     
+      <div class="clear"></div>
+      
+	</div> <!-- End Container -->
+	
+	<div class="sidebar">
+	
+		<div class="sidebox">
+			<h3 class="line">About</h3>
+			<p>Sed posuere consectetur est at lobortis. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit. Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+			<br />
+			<p>Amet risus nullam quis risus eget urna mollis ornare vel eu leo. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. </p>
+		</div>
+		
+		<div class="sidebox">
+			<h3 class="line">Popular Posts</h3>
+			<ul class="popular-posts">
+				<li>
+					<a href="#"><img src="style/images/art/ad1.jpg" alt="" /></a>
+					<h5><a href="#">Dolor Commodo Consectetur</a></h5>
+					<span>26 August 2011 | <a href="#">21 Comments</a></span>
+				</li>
+				
+				<li>
+					<a href="#"><img src="style/images/art/ad2.jpg" alt="" /></a>
+					<h5><a href="#">Dolor Commodo Consectetur</a></h5>
+					<span>26 August 2011 | <a href="#">21 Comments</a></span>
+				</li>
+				
+				<li>
+					<a href="#"><img src="style/images/art/ad3.jpg" alt="" /></a>
+					<h5><a href="#">Dolor Commodo Consectetur</a></h5>
+					<span>26 August 2011 | <a href="#">21 Comments</a></span>
+				</li>
+			</ul>
+		</div>
+		
+		
+		<div class="sidebox">
+			<h3 class="line">Categories</h3>
+			<ul class="cat-list">
+				<li><a href="#">Web Design (15)</a></li>
+				<li><a href="#">Photography (17)</a></li>
+				<li><a href="#">Grapic Design (34)</a></li>
+				<li><a href="#">Manipulation (24)</a></li>
+				<li><a href="#">Web Design (15)</a></li>
+				<li><a href="#">Photography (17)</a></li>
+				<li><a href="#">Grapic Design (34)</a></li>
+				<li><a href="#">Manipulation (24)</a></li>
+			</ul>
+		</div>
+		
+		<div class="sidebox">
+			<h3 class="line">Search</h3>
+			<form class="searchform" method="get">
+          		<input type="text" id="s" name="s" value="type and hit enter" onfocus="this.value=''" onblur="this.value='type and hit enter'"/>
+        	</form>
+		</div>
+		
+	</div>
+    <div class="clear"></div>
+    
+  </div>
+  <!-- End Wrapper -->
+
+
+</body>
+</html>
+${include("../common/foot.html")}

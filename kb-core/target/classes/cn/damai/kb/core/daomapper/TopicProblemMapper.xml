@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.damai.kb.core.daomapper.TopicProblemMapper">
+     <!-- ResultMap映射 -->
+     <resultMap id="TopicProblemResultMap" type="TopicProblem">
+		<id property="id" column="tp_id" />
+		<!-- 映射话题 -->
+		<association property="topic" column="topic_id"
+			select="cn.damai.kb.core.daomapper.TopicMapper.getById">
+		</association>
+		<!-- 映射问题 -->
+		<association property="problem" column="pro_id"
+			select="cn.damai.kb.core.daomapper.ProblemMapper.getById">
+		</association>	
+	</resultMap>
+	
+	<!-- 插入信息并返回主键id -->
+	<insert id="save" parameterType="TopicProblem" useGeneratedKeys="true"
+		keyProperty="tp_id">
+		INSERT INTO kb_Topic_Problem
+		(topic_id,pro_id)
+		VALUES(#{topic.id},#{problem.id})
+	</insert>
+
+	<!-- 更新 -->
+	<update id="update" parameterType="TopicProblem">
+		UPDATE kb_Topic_Problem
+		<set>
+		    <if test="topic != null and topic.id != null"> topic_id=#{topic.id},</if>
+		    <if test="problem != null and pro.id != null"> pro_id=#{pro.id},</if>
+		</set>
+		WHERE tp_id=#{id}
+	</update>
+	
+	<!--根据id删除 -->
+	<delete id="deleteById">
+		DELETE FROM kb_Topic_Problem WHERE tp_id=#{id}
+	</delete>
+
+	<!-- 根据id集合批量删除 
+	<delete id="deleteByIds" parameterType="list">
+		DELETE FROM org_employee WHERE pk_employee_id IN
+		<foreach item="item" index="index" collection="list"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>   先放一放-->
+	
+	
+	
+	<!-- 根据id查询 -->
+	<select id="getById" resultMap="TopicProblemResultMap">
+		SELECT * FROM kb_Topic_Problem WHERE
+		tp_id =
+		#{id} LIMIT 0,1
+	</select>
+	
+	
+	<!-- 根据id集合查询 -->
+	<select id="getByIds" resultMap="TopicProblemResultMap">
+		SELECT * FROM kb_Topic_Problem WHERE tp_id IN
+		<foreach item="item" index="index" collection="list"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	
+	<!-- 自定义的方法 -->
+	<!-- 根据问题id查询相关的话题和问题 -->
+	<select id="getByProblemId" resultType="Long" resultMap="TopicProblemResultMap">
+		SELECT * FROM kb_Topic_Problem WHERE
+		pro_id = #{problemid}
+	</select>
+	
+	<!-- 根据话题id查询相关的话题和问题 -->
+	<select id="getByTopicId" resultType="Long" resultMap="TopicProblemResultMap">
+		SELECT * FROM kb_Topic_Problem WHERE
+		topic_id =
+		#{topicid}
+	</select>
+	
+</mapper>  

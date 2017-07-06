@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.damai.kb.core.daomapper.UserDzReplyMapper">
+     <!-- ResultMap映射 -->
+     <resultMap id="UserDzReplyResultMap" type="UserDzReply">
+		<id property="id" column="user_reply_id" />
+
+		<!-- 映射用户 -->
+		<association property="user" column="user_id"
+			select="cn.damai.kb.core.daomapper.UsersMapper.getById">
+		</association>
+		<!-- 映射问题 -->
+		<association property="reply" column="reply_id"
+			select="cn.damai.kb.core.daomapper.ReplyMapper.getById">
+		</association>
+	</resultMap>
+	
+	<!-- 插入信息并返回主键id -->
+	<insert id="save" parameterType="UserDzReply" useGeneratedKeys="true"
+		keyProperty="user_reply_id">
+		INSERT INTO kb_userdz_reply
+		(user_id,reply_id)
+		VALUES(#{user.id},#{reply.id})
+	</insert>
+
+	<!-- 更新 -->
+	<update id="update" parameterType="UserDzReply">
+		UPDATE kb_userdz_reply
+		<set>
+		    <if test="user != null and user.id != null"> user_id=#{user.id},</if>
+		    <if test="reply != null and reply.id != null"> reply_id=#{reply.id},</if>
+		</set>
+		WHERE user_reply_id=#{id}
+	</update>
+	
+	<!--根据id删除 -->
+	<delete id="deleteById">
+		DELETE FROM kb_userdz_reply WHERE user_reply_id=#{id}
+	</delete>
+
+	<!-- 根据id集合批量删除 
+	<delete id="deleteByIds" parameterType="list">
+		DELETE FROM org_employee WHERE pk_employee_id IN
+		<foreach item="item" index="index" collection="list"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>   先放一放-->
+	
+	
+	
+	<!-- 根据id查询 -->
+	<select id="getById" resultMap="UserDzReplyResultMap">
+		SELECT * FROM kb_userdz_reply WHERE
+		user_reply_id =
+		#{id} LIMIT 0,1
+	</select>
+	
+	
+	<!-- 根据id集合查询 -->
+	<select id="getByIds" resultMap="UserDzReplyResultMap">
+		SELECT * FROM kb_userdz_reply WHERE user_reply_id IN
+		<foreach item="item" index="index" collection="list"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	
+	<!-- 自定义 -->
+	<!-- 根据用户id查询相关的话题和问题 -->
+	<select id="getByUserId" resultType="Long" resultMap="UserDzReplyResultMap">
+	  SELECT * FROM kb_userdz_reply WHERE
+		user_id =
+		#{userid}
+	</select>
+	
+	<!-- 根据话题id查询相关的话题和问题 -->
+	<select id="getByReplyId" resultType="Long" resultMap="UserDzReplyResultMap">
+		SELECT * FROM kb_userdz_reply WHERE
+		reply_id = 
+		#{replyid}
+	</select>
+
+</mapper>  

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.damai.kb.core.daomapper.ProblemMapper">
+     <!-- ResultMap映射 -->
+     <resultMap id="ProblemResultMap" type="Problem">
+		<id property="id" column="pro_id" />
+		
+		<result property="title" column="problem_title" />
+		<result property="desciption" column="problem_description" />
+		<result property="time" column="problem_time" />
+		<!-- 映射用户 -->
+		
+		<association property="user" column="user_id"
+			select="cn.damai.kb.core.daomapper.UsersMapper.getById">
+		</association>
+		
+		<collection property="topicpro" column="pro_id"
+			select="cn.damai.kb.core.daomapper.TopicProblemMapper.getByProblemId"></collection>
+			
+		<collection property="reply" column="pro_id"
+			select="cn.damai.kb.core.daomapper.ReplyMapper.getByProblemId"></collection>
+			
+	    <collection property="userProblem" column="pro_id"
+			select="cn.damai.kb.core.daomapper.UserProblemMapper.getByProblemId"></collection>
+	</resultMap>
+	
+	<!-- 插入信息并返回主键id -->
+	<insert id="save" parameterType="Problem" useGeneratedKeys="true"
+		keyProperty="id">
+		INSERT INTO kb_problem
+		(user_id,problem_title,problem_description,problem_time)
+		VALUES(#{user.id},#{title},#{desciption},#{time})
+	</insert>
+
+	<!-- 更新 -->
+	<update id="update" parameterType="Problem">
+		UPDATE kb_problem
+		<set>
+		    <if test="user != null and user.id != null"> user_id=#{user.id},</if>
+			<if test="title != null"> problem_title=#{title},</if>
+			<if test="desciption != null"> problem_description=#{desciption},</if>
+			<if test="time != null"> problem_time=#{time},</if>
+		</set>
+		WHERE pro_id=#{id}
+	</update>
+	
+	<!--根据id删除 -->
+	<delete id="deleteById">
+		DELETE FROM kb_problem WHERE pro_id=#{id}
+	</delete>
+
+	<!-- 根据id集合批量删除 
+	<delete id="deleteByIds" parameterType="list">
+		DELETE FROM org_employee WHERE pk_employee_id IN
+		<foreach item="item" index="index" collection="list"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>   先放一放-->
+	
+	<!-- 根据id查询 -->
+	<select id="getById" resultMap="ProblemResultMap">
+		SELECT * FROM kb_problem WHERE
+		pro_id =
+		#{id} LIMIT 0,1
+	</select>
+	
+	
+	<!-- 根据id集合查询 -->
+	<select id="getByIds" resultMap="ProblemResultMap">
+		SELECT * FROM kb_problem WHERE pro_id IN
+		<foreach item="item" index="index" collection="list"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	
+	<!-- 自定义 -->
+	<!-- 分页查询 -->
+	<select id="getQueryAll" resultMap="ProblemResultMap" resultType="Problem">
+		SELECT * FROM kb_problem  LIMIT #{pageIndex},#{pageSize}
+	</select>
+	
+	<select id="getAll" resultMap="ProblemResultMap" resultType="Problem">
+		SELECT * FROM kb_problem 
+	</select>
+	
+	
+	<!-- 查找最受欢迎的问题，前n条 -->
+	<select id="getMaxPopular" resultMap="ProblemResultMap">
+		SELECT p.* FROM kb_problem p ,kb_reply r WHERE p.pro_id = 
+ r.pro_id GROUP BY p.pro_id ORDER BY COUNT(r.reply_id) DESC  LIMIT 0,#{number}
+	</select>
+	
+	
+	<!-- 根据问题id查询相关的话题和问题 -->
+	<select id="getByUserId" resultType="Long" resultMap="ProblemResultMap">
+		SELECT * FROM kb_problem WHERE
+		user_id =
+		#{userid}
+	</select>
+	
+
+</mapper>  
